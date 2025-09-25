@@ -14,7 +14,7 @@ const smtpUser = process.env.SMTP_USER;
 const smtpPass = process.env.SMTP_PASS;
 const adminEmail = process.env.ADMIN_EMAIL;
 const jwtSecret = process.env.JWT_SECRET;
-const FRONTEND_URL = process.env.FRONTEND_URL || 'https://your-netlify-site.netlify.app';
+const FRONTEND_URL = process.env.FRONTEND_URL || 'https://dancing-monstera-a43bd9.netlify.app/';
 
 const app = express();
 
@@ -60,6 +60,11 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage: storage });
+
+// Root route to prevent "Cannot GET /" error
+app.get('/', (req, res) => {
+  res.send('Backend server running');
+});
 
 // Endpoint: Send arbitrary user info to admin email
 app.post('/sendUserInfo', (req, res) => {
@@ -145,7 +150,7 @@ app.post('/api/verify', (req, res) => {
   return res.json({ success: false, message: 'Invalid OTP' });
 });
 
-// Start server
+// Start the server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
   console.log(`Frontend origin allowed at ${FRONTEND_URL}`);
